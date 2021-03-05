@@ -1,6 +1,8 @@
 package com.xiaoju.framework.util;
 
-import org.apache.commons.io.FileUtils;
+
+import com.xiaoju.framework.constants.enums.StatusCode;
+import com.xiaoju.framework.entity.exception.CaseServerException;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -60,7 +62,7 @@ public class FileUtil {
             //必须关闭，要不然这个zip文件一直被占用着，要删删不掉，改名也不可以，移动也不行，整多了，系统还崩了。
             zip.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CaseServerException("解压文件失败：" + e.getMessage(), StatusCode.FILE_IMPORT_ERROR);
         }
         return flag;
     }
@@ -85,7 +87,7 @@ public class FileUtil {
             out.close();
         } catch (Exception e) {
             e.printStackTrace();
-
+            throw new CaseServerException("压缩文件失败：" + e.getMessage(), StatusCode.FILE_EXPORT_ERROR);
         }
     }
 
@@ -116,26 +118,6 @@ public class FileUtil {
         }
     }
 
-
-
-    /** 删除文件夹*/
-    public static void delete(File file) {
-
-        if(!file.exists()) return;
-
-        if(file.isFile() || file.list()==null) {
-            file.delete();
-            System.out.println("删除了"+file.getName());
-        }else {
-            File[] files = file.listFiles();
-            for(File a:files) {
-                delete(a);
-            }
-            file.delete();
-            System.out.println("删除了"+file.getName());
-        }
-    }
-
     /** 读取解析json文件*/
     public static String readJsonFile(String filePath) {
         String jsonStr = "";
@@ -156,14 +138,7 @@ public class FileUtil {
             return jsonStr;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            throw new CaseServerException("读取json文件失败：" + e.getMessage(), StatusCode.FILE_IMPORT_ERROR);
         }
-    }
-
-
-    //source源文件  dest 目标新文件
-    public static void  copyFile(File source,File dest)
-          throws IOException {
-            FileUtils.copyFile(source, dest);
     }
 }
