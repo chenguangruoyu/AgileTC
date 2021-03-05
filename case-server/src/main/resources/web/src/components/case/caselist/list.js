@@ -46,7 +46,7 @@ class Lists extends React.Component {
       taskVisible: false,
       record: null,
       extRecord: null,
-      expendKeys: [],
+      expendKeys: this.props.expendKeys,
       titleModeTask: '',
       loading: this.props.loading,
       extendLoading: new Map(),
@@ -71,6 +71,7 @@ class Lists extends React.Component {
           iterationFilter: this.props.iterationFilter,
           createrFilter: this.props.createrFilter,
           nameFilter: this.props.nameFilter,
+          expendKeys: nextProps.expendKeys,
         });
       });
     }
@@ -329,7 +330,7 @@ class Lists extends React.Component {
                   查看冒烟case
                 </a>
               )) ||
-                null}
+              null}
             </span>
           );
         },
@@ -495,8 +496,8 @@ class Lists extends React.Component {
         render: (text, record) =>
           text
             ? `${moment(text).format('YYYY-MM-DD')} 至 ${moment(
-                record.expectEndTime,
-              ).format('YYYY-MM-DD')}`
+            record.expectEndTime,
+            ).format('YYYY-MM-DD')}`
             : '',
       },
       {
@@ -587,8 +588,8 @@ class Lists extends React.Component {
     return (
       <div className="recordTable" style={{ width: '91%' }}>
         {item.recordList &&
-          item.recordList.length > 0 &&
-          ((
+        item.recordList.length > 0 &&
+        ((
             <Table
               columns={columns}
               dataSource={item.recordList}
@@ -598,7 +599,7 @@ class Lists extends React.Component {
               size="middle"
             />
           ) ||
-            null)}
+          null)}
       </div>
     );
   };

@@ -9,7 +9,7 @@ class casePage extends React.Component {
       <section style={{ marginBottom: 30 }}>
         <Header style={{ zIndex: 9 }}>
           <a href="/" style={{ color: '#fff', fontSize: 24 }}>
-            AgileTC
+            HJ-CASE
           </a>
         </Header>
         <div style={{ padding: 24 }}>
