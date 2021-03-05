@@ -12,7 +12,7 @@ export const Banner30DataSource = {
           <div>
             <img src={logoImg} className="banner3-logo" />
             <br />
-            <span>AgileTC</span>
+            <span>HJ-CASE</span>
           </div>
         ),
       },
@@ -30,7 +30,7 @@ export const Banner30DataSource = {
         className: 'banner3-name-en',
         children: (
           <span style={{ color: '#7d899b' }}>
-            以脑图方式编辑可快速上手，用例关联需求形成流程闭环，并支持组件化引用，
+            以脑图方式编辑可快速上手，用例关联需求形成流程闭环
             <br />
             可在各个平台嵌入使用，是测试人员的贴心助手
           </span>
@@ -57,7 +57,7 @@ export const Footer00DataSource = {
     children: (
       <span>
         <p>
-          <span>©2020 AgileTC</span>
+          <span>©2021 HUAJIAO</span>
         </p>
       </span>
     ),

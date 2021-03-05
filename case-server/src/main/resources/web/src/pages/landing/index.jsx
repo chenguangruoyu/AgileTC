@@ -68,7 +68,7 @@ export default class Home extends React.Component {
       >
         <Header style={{ zIndex: 9 }}>
           <a href="/" style={{ color: '#fff', fontSize: 24 }}>
-            AgileTC
+            HJ-CASE
           </a>
         </Header>
         {/* 如果不是 dva 2.0 替换成 {children} start */}
