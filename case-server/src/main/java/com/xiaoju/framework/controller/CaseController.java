@@ -1,11 +1,13 @@
 package com.xiaoju.framework.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xiaoju.framework.constants.enums.StatusCode;
 import com.xiaoju.framework.entity.exception.CaseServerException;
 import com.xiaoju.framework.entity.request.cases.*;
 import com.xiaoju.framework.entity.request.ws.WsSaveReq;
 import com.xiaoju.framework.entity.response.controller.Response;
 import com.xiaoju.framework.service.CaseService;
+import com.xiaoju.framework.util.HttpClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -197,6 +199,15 @@ public class CaseController {
             LOGGER.error("[Case Update]Update test case failed. params={} e={} ", req.toString(), e.getMessage());
             return Response.build(StatusCode.SERVER_BUSY_ERROR);
         }
+    }
+
+    @GetMapping(value = "/getUserInfoBySid")
+    public Response<?> getUserInfoBySid(@RequestParam @NotNull(message = "sid不能为空") String sid) {
+        String url = "https://login.ops.qihoo.net:4430/sec/login?sid=" + sid;
+        String res = HttpClientUtil.getInstance().sendHttpGet(url);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+
+        return Response.success(jsonObject);
     }
 
 }

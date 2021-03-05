@@ -490,6 +490,17 @@ class Lists extends React.Component {
         ),
       },
       {
+        title: 'Bug数',
+        dataIndex: 'bugNum',
+        key: 'bugNum',
+        align: 'center',
+        render: (text, record) => (
+          <span className="table-operation">
+            {record.bugNum}
+          </span>
+        ),
+      },
+      {
         title: '期望时间',
         dataIndex: 'expectStartTime',
         key: 'expectStartTime',
