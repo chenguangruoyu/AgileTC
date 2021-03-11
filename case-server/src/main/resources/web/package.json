@@ -1,14 +1,14 @@
 {
   "scripts": {
     "start": "umi dev",
-    "build": "sudo umi build",
+    "build": "umi build",
     "test": "umi test",
     "lint": "eslint --ext .js src mock tests",
     "precommit": "lint-staged"
   },
   "dependencies": {
-    "antd": "^3.23.6",
-    "axios": "^0.19.0",
+    "antd": "^4.13.1",
+    "axios": "^0.21.1",
     "dva": "^2.6.0-beta.6",
     "enquire-js": "^0.2.1",
     "lodash.debounce": "^4.0.8",
@@ -18,9 +18,10 @@
     "rc-scroll-anim": "^2.7.4",
     "rc-texty": "^0.2.0",
     "react": "^16.8.6",
-    "react-agiletc-editor": "^0.1.7",
+    "react-agiletc-editor": "^0.1.9",
     "react-dom": "^16.8.6",
-    "react-resize-panel": "^0.3.5"
+    "react-resize-panel": "^0.3.5",
+    "umi": "^3.4.1"
   },
   "devDependencies": {
     "babel-eslint": "^9.0.0",
@@ -42,7 +43,6 @@
     "prettier": "^1.18.2",
     "react-test-renderer": "^16.7.0",
     "sass-loader": "^7.3.1",
-    "umi": "^2.7.7",
     "umi-plugin-react": "^1.8.4"
   },
   "husky": {
