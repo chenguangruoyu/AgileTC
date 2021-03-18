@@ -326,80 +326,80 @@ public class TreeUtil {
     }
 
     //导入xml内容
-     public  static JSONArray importDataByXml(Element e) {
-         JSONArray jsonArray = new JSONArray();
-         List<Element> elementList = e.elements();
-         if(elementList.size() == 0)
-             return jsonArray;
-         for(Element element1:elementList)
-         {
-             if(element1.getName().equalsIgnoreCase("topic"))
-             {
-                 JSONArray childrenNext = new JSONArray();
-                 JSONObject root = new JSONObject();
-                 JSONObject dataObj = new JSONObject();
-                 List<Element> newList = element1.elements();
-                 String text = "";
-                 Integer priorityId = 0;
-                 String created = element1.attributeValue("timestamp");
-                 String id = element1.attributeValue("id");
+    public  static JSONArray importDataByXml(Element e) {
+        JSONArray jsonArray = new JSONArray();
+        List<Element> elementList = e.elements();
+        if(elementList.size() == 0)
+            return jsonArray;
+        for(Element element1:elementList)
+        {
+            if(element1.getName().equalsIgnoreCase("topic"))
+            {
+                JSONArray childrenNext = new JSONArray();
+                JSONObject root = new JSONObject();
+                JSONObject dataObj = new JSONObject();
+                List<Element> newList = element1.elements();
+                String text = "";
+                Integer priorityId = 0;
+                String created = element1.attributeValue("timestamp");
+                String id = element1.attributeValue("id");
 
-                 for (Element element : newList) {
-                     if (element.getName().equalsIgnoreCase("title")) {
-                         //标题
-                         text = element.getText();
-                     }else if (element.getName().equalsIgnoreCase("marker-refs")) {
-                         // 优先级
-                         priorityId =  getPriorityByElement(element);
-                     }else if (element.getName().equalsIgnoreCase("children")) {
-                         //子节点
-                         List<Element> elementList1 = element.elements();
-                         for(Element childEle:elementList1)
-                         {
-                             if(childEle.getName().equalsIgnoreCase("topics"))
-                             {
-                                 JSONArray jsonArray1 = importDataByXml(childEle);
-                                 if(jsonArray1.size()>0){
-                                     childrenNext.addAll(jsonArray1);
-                                 }
-                             }
-                         }
-                     } else {
-                         continue;
-                     }
-                 }
+                for (Element element : newList) {
+                    if (element.getName().equalsIgnoreCase("title")) {
+                        //标题
+                        text = element.getText();
+                    }else if (element.getName().equalsIgnoreCase("marker-refs")) {
+                        // 优先级
+                        priorityId =  getPriorityByElement(element);
+                    }else if (element.getName().equalsIgnoreCase("children")) {
+                        //子节点
+                        List<Element> elementList1 = element.elements();
+                        for(Element childEle:elementList1)
+                        {
+                            if(childEle.getName().equalsIgnoreCase("topics"))
+                            {
+                                JSONArray jsonArray1 = importDataByXml(childEle);
+                                if(jsonArray1.size()>0){
+                                    childrenNext.addAll(jsonArray1);
+                                }
+                            }
+                        }
+                    } else {
+                        continue;
+                    }
+                }
 
-                 dataObj.put("created", created);
-                 dataObj.put("id", id);
-                 dataObj.put("text", text);
-                 dataObj.put("priority", priorityId);
-                 root.put("data",dataObj);
-                 if(childrenNext.size() != 0) {
-                     root.put("children",childrenNext);
-                 }
-                 jsonArray.add(root);
-             }
-         }
-         return jsonArray;
+                dataObj.put("created", created);
+                dataObj.put("id", id);
+                dataObj.put("text", text);
+                dataObj.put("priority", priorityId);
+                root.put("data",dataObj);
+                if(childrenNext.size() != 0) {
+                    root.put("children",childrenNext);
+                }
+                jsonArray.add(root);
+            }
+        }
+        return jsonArray;
 
-     }
+    }
 
-     //根据xml文件获取优先级
-     private static Integer getPriorityByElement(Element element)
-     {
-         Integer priorityId = 0;
-         Map<String, Integer> priorityIds = getAllPriority();
-         List<Element> markers = element.elements();
-         if (markers != null && markers.size() > 0) {
-             for (Element mark : markers) {
-                 String markId = mark.attributeValue("marker-id");
-                 if (priorityIds.containsKey(markId)) {
-                     priorityId = priorityIds.get(markId);
-                 }
-             }
-         }
-         return priorityId;
-     }
+    //根据xml文件获取优先级
+    private static Integer getPriorityByElement(Element element)
+    {
+        Integer priorityId = 0;
+        Map<String, Integer> priorityIds = getAllPriority();
+        List<Element> markers = element.elements();
+        if (markers != null && markers.size() > 0) {
+            for (Element mark : markers) {
+                String markId = mark.attributeValue("marker-id");
+                if (priorityIds.containsKey(markId)) {
+                    priorityId = priorityIds.get(markId);
+                }
+            }
+        }
+        return priorityId;
+    }
 
     //根据content.json文件获取优先级
     private static Integer getPriorityByJsonArray(JSONArray markers)
@@ -425,12 +425,17 @@ public class TreeUtil {
         priority = jsonObject.getInteger("priority");
         String topicPriority = "";
         if(priority != null && priority != 0){
-            Map<String, Integer> priorityIds = getAllPriority();
-            for (Map.Entry<String, Integer> entry : priorityIds.entrySet()) {
-                //如果value和key对应的value相同 并且 key不在list中
-                if(priority.equals(entry.getValue())){
-                    topicPriority=entry.getKey();
-                    break;
+            if(priority.equals(3)){
+                topicPriority = "priority-3";
+            }else
+            {
+                Map<String, Integer> priorityIds = getAllPriority();
+                for (Map.Entry<String, Integer> entry : priorityIds.entrySet()) {
+                    //如果value和key对应的value相同 并且 key不在list中
+                    if(priority.equals(entry.getValue())){
+                        topicPriority=entry.getKey();
+                        break;
+                    }
                 }
             }
         }
@@ -438,18 +443,18 @@ public class TreeUtil {
     }
 
     //获取所有优先级
-     private static Map<String, Integer> getAllPriority(){
-         Map<String, Integer> priorityIds = new HashMap<>();
-         priorityIds.put("priority-1", 1);
-         priorityIds.put("priority-2", 2);
-         priorityIds.put("priority-3", 3);
-         priorityIds.put("priority-4", 3);
-         priorityIds.put("priority-5", 3);
-         priorityIds.put("priority-6", 3);
-         priorityIds.put("priority-7", 3);
-         priorityIds.put("priority-8", 3);
-         priorityIds.put("priority-9", 3);
-         return priorityIds;
-     }
+    private static Map<String, Integer> getAllPriority(){
+        Map<String, Integer> priorityIds = new HashMap<>();
+        priorityIds.put("priority-1", 1);
+        priorityIds.put("priority-2", 2);
+        priorityIds.put("priority-3", 3);
+        priorityIds.put("priority-4", 3);
+        priorityIds.put("priority-5", 3);
+        priorityIds.put("priority-6", 3);
+        priorityIds.put("priority-7", 3);
+        priorityIds.put("priority-8", 3);
+        priorityIds.put("priority-9", 3);
+        return priorityIds;
+    }
 
 }

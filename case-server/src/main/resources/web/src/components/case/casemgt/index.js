@@ -57,7 +57,11 @@ export default class CaseMgt extends React.Component {
     const minderData = this.editorNode
       ? this.editorNode.getAllData()
       : { base: 0 };
-    if (Number(iscore) !== 2 && minderData) {
+    // 是否有ws链接断开弹窗
+    const hasBreak =
+      document.getElementsByClassName('ws-warning') &&
+      document.getElementsByClassName('ws-warning').length > 0;
+    if (Number(iscore) !== 2 && minderData && !hasBreak) {
       // 非冒烟case才可保存
       if (Number(minderData.base) > 1) {
         message.warn('即将离开页面，自动保存当前用例。');
@@ -87,7 +91,7 @@ export default class CaseMgt extends React.Component {
           },
           () => {
             this.state.casedetail.requirementId &&
-              this.getRequirementsById(this.state.casedetail.requirementId);
+            this.getRequirementsById(this.state.casedetail.requirementId);
           },
         );
       } else {
@@ -227,7 +231,7 @@ export default class CaseMgt extends React.Component {
                         style={{
                           width: `${(recordDetail.successCount /
                             recordDetail.totalCount) *
-                            100}%`,
+                          100}%`,
                           backgroundColor: '#61C663',
                         }}
                       >
@@ -248,7 +252,7 @@ export default class CaseMgt extends React.Component {
                         style={{
                           width: `${(recordDetail.blockCount /
                             recordDetail.totalCount) *
-                            100}%`,
+                          100}%`,
                           backgroundColor: '#85A1D6',
                         }}
                       >
@@ -256,7 +260,7 @@ export default class CaseMgt extends React.Component {
                       </div>
                     </Tooltip>
                   )) ||
-                    null}
+                  null}
                   {(recordDetail.bugNum > 0 && (
                     <Tooltip
                       title={`失败:${recordDetail.bugNum} (${(
@@ -269,7 +273,7 @@ export default class CaseMgt extends React.Component {
                         style={{
                           width: `${(recordDetail.bugNum /
                             recordDetail.totalCount) *
-                            100}%`,
+                          100}%`,
                           backgroundColor: '#FF7575',
                         }}
                       >
@@ -277,11 +281,11 @@ export default class CaseMgt extends React.Component {
                       </div>
                     </Tooltip>
                   )) ||
-                    null}
+                  null}
                   {(recordDetail.totalCount - recordDetail.passCount > 0 && (
                     <Tooltip
                       title={`未执行:${recordDetail.totalCount -
-                        recordDetail.passCount} (${(
+                      recordDetail.passCount} (${(
                         ((recordDetail.totalCount - recordDetail.passCount) /
                           recordDetail.totalCount) *
                         100
@@ -293,7 +297,7 @@ export default class CaseMgt extends React.Component {
                           width: `${((recordDetail.totalCount -
                             recordDetail.passCount) /
                             recordDetail.totalCount) *
-                            100}%`,
+                          100}%`,
                           backgroundColor: '#EDF0FA',
                         }}
                       >
@@ -301,7 +305,7 @@ export default class CaseMgt extends React.Component {
                       </div>
                     </Tooltip>
                   )) ||
-                    null}
+                  null}
                 </div>
               </Col>
               <Col span={1}></Col>
@@ -319,7 +323,7 @@ export default class CaseMgt extends React.Component {
               </Col>
             </Row>
           )) ||
-            null}
+          null}
 
           {(casedetail && (
             <Row>
@@ -337,7 +341,7 @@ export default class CaseMgt extends React.Component {
               </Col>
             </Row>
           )) ||
-            null}
+          null}
           <div
             style={{
               display: 'inline-block',
@@ -368,8 +372,11 @@ export default class CaseMgt extends React.Component {
             editorStyle={{ height: 'calc(100vh - 100px)' }}
             toolbar={{
               image: false,
-              theme: ['classic-compact', 'fresh-blue', 'fresh-green-compat'],
-              template: ['default', 'right', 'fish-bone'],
+              theme: ['classic-compact', 'fresh-blue', 'fresh-green-compat',
+                'classic', 'fresh-red', 'fresh-soil', 'fresh-green', 'fresh-purple', 'fresh-red-compat', 'fresh-soil-compat',
+                'fresh-pink-compat', 'fresh-purple-compat','fresh-blue-compat', 'tianpan-compact','tianpan', 'snow'],
+              template: ['default', 'right', 'fish-bone', 'tianpan', 'structure', 'filetree'],
+              noteTemplate: '# test',
             }}
             baseUrl="/"
             uploadUrl="/api/projmgr/common/uploadAttachment"
@@ -377,9 +384,9 @@ export default class CaseMgt extends React.Component {
             onSave={
               Number(iscore) !== 2
                 ? () => {
-                    message.loading('保存中......', 1);
-                    this.updateCase();
-                  }
+                  message.loading('保存中......', 1);
+                  this.updateCase();
+                }
                 : null
             }
           />
