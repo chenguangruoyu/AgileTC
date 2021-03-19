@@ -9,8 +9,8 @@ const getCookies = getQueryString.getCookie
 // 若未获取到用户名，认为未登录跳转到奇虎登录页面。
 if (getCookies('username') == null) {
   window.location =
-    // 'https://login.ops.qihoo.net:4430/sec/login?ref=http://10.142.114.39:8094/case/caseList/1'
-    'https://login.ops.qihoo.net:4430/sec/login?ref=http://localhost:8094/case/caseList/1'
+    'https://login.ops.qihoo.net:4430/sec/login?ref=http://10.142.114.39:8094/case/caseList/1'
+  // 'https://login.ops.qihoo.net:4430/sec/login?ref=http://localhost:8094/case/caseList/1'
 }
 
 // 从登录页面跳转回，读取URL参数sid的值。
@@ -23,8 +23,8 @@ if (sidValue.search('sid') == -1) {
   throw SyntaxError()
 }
 
-// let url = 'http://10.142.114.39:8094/api/case/getUserInfoBySid'
-let url = 'http://localhost:8094/api/case/getUserInfoBySid'
+let url = 'http://10.142.114.39:8094/api/case/getUserInfoBySid'
+// let url = 'http://localhost:8094/api/case/getUserInfoBySid'
 
 function testGet() {
   return request(url, { method: 'GET', params: { sid: sid } })
