@@ -312,6 +312,16 @@ class Lists extends React.Component {
                         导出xmind
                       </a>
                     </Menu.Item>
+
+                    {/*<Menu.Item>*/}
+                    {/*  <a*/}
+                    {/*    onClick={() => {*/}
+                    {/*      this.showBackupList('修改记录', record);*/}
+                    {/*    }}*/}
+                    {/*  >*/}
+                    {/*    修改记录*/}
+                    {/*  </a>*/}
+                    {/*</Menu.Item>*/}
                   </Menu>
                 }
               >
@@ -405,6 +415,39 @@ class Lists extends React.Component {
         caseId: titleModeTask === '编辑测试任务' ? record.caseId : record.id,
         priority,
         resource: resource || [],
+      },
+    }).then(res => {
+      if (res.code === 200) {
+        this.setState({ caseInfo: res.data });
+      }
+    });
+  };
+
+  showBackupList = (title, record) => {
+    let priority = record.chooseContent
+      ? this.handleChooseContent(record.chooseContent).priority
+      : [];
+    let resource = record.chooseContent
+      ? JSON.parse(record.chooseContent).resource
+      : [];
+    this.setState(
+      { taskVisible: true, record: record, titleModeTask: title, caseInfo: {} },
+      () => {
+        this.getBackupList(priority, resource);
+      },
+    );
+  };
+  //获取备份列表
+  getBackupList = (priority, resource) => {
+    const { record } = this.state;
+    let url = '/backup/getBackupByCaseId';
+    if (this.props.type === 'oe') {
+      url = `${this.props.doneApiPrefix}/backup/getBackupByCaseId`;
+    }
+    request(url, {
+      method: 'GET',
+      params: {
+        caseId: record.caseId
       },
     }).then(res => {
       if (res.code === 200) {
@@ -835,6 +878,7 @@ class Lists extends React.Component {
           onClose={this.onCloseTask}
           handleOkTask={this.handleOkTask}
           showTask={this.showTask}
+          showBackupList={this.showBackupList}
           getOwnerList={this.getOwnerList}
           ownerList={ownerList}
           fetching={fetching}
@@ -845,6 +889,7 @@ class Lists extends React.Component {
           doneApiPrefix={this.props.doneApiPrefix}
           titleModeTask={this.state.titleModeTask}
           getCaseInfo={this.getCaseInfo}
+          getBackupList={this.getBackupList}
         />
       </div>
     );

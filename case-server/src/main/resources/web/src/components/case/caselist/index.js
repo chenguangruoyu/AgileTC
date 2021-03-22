@@ -51,7 +51,6 @@ class CaseLists extends React.Component {
       isAdd: true,
       isReName: true,
       treeSelect: [],
-      treeData: [],
       expendKeys: [] // 控制用例列表中处于展开状态的行
     };
   }

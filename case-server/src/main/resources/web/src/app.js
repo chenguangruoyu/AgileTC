@@ -5,8 +5,7 @@ import { message } from 'antd'
 
 const getCookies = getQueryString.getCookie
 
-// 从Cookies中获取设置的用户名
-// 若未获取到用户名，认为未登录跳转到奇虎登录页面。
+// 从Cookies未获取到用户名，认为未登录跳转到奇虎登录页面。
 if (getCookies('username') == null) {
   window.location =
     'https://login.ops.qihoo.net:4430/sec/login?ref=http://10.142.114.39:8094/case/caseList/1'
