@@ -12,8 +12,6 @@ if (localStorage.getItem('username') != null) {
 }
 
 if (getCookies('username') == null) {
-  window.location = 'https://login.ops.qihoo.net:4430/sec/login?ref=' + targetURL
-
   let sid = getParamValue('sid')
   let uri = '/case/getUserInfoBySid'
 
@@ -30,6 +28,8 @@ if (getCookies('username') == null) {
     }
   })
 }
+
+
 
 if (localStorage.getItem('username') != null) {
   utils.setcookie('username', localStorage.getItem('username'))
