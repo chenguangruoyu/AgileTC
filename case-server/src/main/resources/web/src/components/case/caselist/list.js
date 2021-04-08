@@ -312,16 +312,15 @@ class Lists extends React.Component {
                         导出xmind
                       </a>
                     </Menu.Item>
-
-                    {/*<Menu.Item>*/}
-                    {/*  <a*/}
-                    {/*    onClick={() => {*/}
-                    {/*      this.showBackupList('修改记录', record);*/}
-                    {/*    }}*/}
-                    {/*  >*/}
-                    {/*    修改记录*/}
-                    {/*  </a>*/}
-                    {/*</Menu.Item>*/}
+                    <Menu.Item>
+                      <a
+                        onClick={() => {
+                          this.showBackupList('修改记录', record);
+                        }}
+                      >
+                        修改记录
+                      </a>
+                    </Menu.Item>
                   </Menu>
                 }
               >
@@ -424,36 +423,46 @@ class Lists extends React.Component {
   };
 
   showBackupList = (title, record) => {
-    let priority = record.chooseContent
-      ? this.handleChooseContent(record.chooseContent).priority
-      : [];
-    let resource = record.chooseContent
-      ? JSON.parse(record.chooseContent).resource
-      : [];
-    this.setState(
-      { taskVisible: true, record: record, titleModeTask: title, caseInfo: {} },
-      () => {
-        this.getBackupList(priority, resource);
-      },
-    );
+
   };
   //获取备份列表
-  getBackupList = (priority, resource) => {
-    const { record } = this.state;
-    let url = '/backup/getBackupByCaseId';
-    if (this.props.type === 'oe') {
+  getBackupList = id => {
+    let { type } = this.props;
+    let url = `/backup/getBackupByCaseId`
+    if (type === 'oe') {
       url = `${this.props.doneApiPrefix}/backup/getBackupByCaseId`;
     }
+    let timestamp = (new Date()).getTime();
     request(url, {
       method: 'GET',
       params: {
-        caseId: record.caseId
-      },
+        caseId: id,
+        beginTime: (timestamp - 3*24*60*60*1000),
+        endTime: timestamp }
     }).then(res => {
-      if (res.code === 200) {
-        this.setState({ caseInfo: res.data });
+      if (res.code == 200) {
+        let { list } = this.state;
+        list.map(item => {
+          item.backupList = res.data;
+          item.backupNum = res.data.length;
+          if (item.recordNum === 0) {
+            this.setState({ expendKeys: [] });
+          }
+
+        });
+        this.setState({ list }, () => {
+          let extendLoading = this.state.extendLoading.set(id, false);
+
+          this.setState({
+            extendLoading,
+          });
+        });
+      } else {
+        message.error(res.msg);
       }
     });
+
+
   };
   renderExpand = item => {
     const columns = [

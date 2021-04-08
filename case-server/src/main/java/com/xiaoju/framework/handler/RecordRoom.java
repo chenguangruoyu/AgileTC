@@ -7,6 +7,7 @@ import com.xiaoju.framework.constants.SystemConstant;
 import com.xiaoju.framework.entity.dto.RecordWsDto;
 import com.xiaoju.framework.entity.persistent.ExecRecord;
 import com.xiaoju.framework.entity.xmind.IntCount;
+import com.xiaoju.framework.util.BitBaseUtil;
 import com.xiaoju.framework.util.TreeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class RecordRoom extends Room {
     private String executors;
     public RecordRoom(Long id) {
         super(id);
-        recordId = (id >> 32);
+        recordId = BitBaseUtil.getHigh32(id);
     }
 
     @Override
@@ -84,13 +85,14 @@ public class RecordRoom extends Room {
                 recordUpdate.setTotalCount(totalCount);
                 recordUpdate.setSuccessCount(successCount);
                 recordService.modifyRecord(recordUpdate);
-                LOGGER.info(Thread.currentThread().getName() + ": 数据库用例内容更新。");
+                LOGGER.info(Thread.currentThread().getName() + ": 数据库用例记录更新。");
             }
             LOGGER.info(Thread.currentThread().getName() + ": 最后一名用户 " + p.getClient().getClientName() + " 离开，关闭。");
         }
 
         // 广播有用户离开
-        broadcastRoomMessage("当前用户数:" + players.size() + "。用例编辑者 " + p.getClient().getClientName() + " 离开");
+        broadcastRoomMessage( "当前用户数:" + players.size() + "。用例执行者 " + p.getClient().getClientName() + " 离开");
+
     }
 
     public void mergeRecoed(Long recordId, String caseContentStr) {
