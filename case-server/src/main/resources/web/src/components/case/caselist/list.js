@@ -312,15 +312,15 @@ class Lists extends React.Component {
                         导出xmind
                       </a>
                     </Menu.Item>
-                    <Menu.Item>
-                      <a
-                        onClick={() => {
-                          this.showBackupList('修改记录', record);
-                        }}
-                      >
-                        修改记录
-                      </a>
-                    </Menu.Item>
+                    {/*<Menu.Item>*/}
+                    {/*  <a*/}
+                    {/*    onClick={() => {*/}
+                    {/*      this.showBackupList('修改记录', record);*/}
+                    {/*    }}*/}
+                    {/*  >*/}
+                    {/*    修改记录*/}
+                    {/*  </a>*/}
+                    {/*</Menu.Item>*/}
                   </Menu>
                 }
               >
