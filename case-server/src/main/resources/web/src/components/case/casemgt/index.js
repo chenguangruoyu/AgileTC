@@ -365,7 +365,7 @@ export default class CaseMgt extends React.Component {
           </div>
           <AgileTCEditor
             ref={editorNode => (this.editorNode = editorNode)}
-            tags={['前置条件', '执行步骤', '预期结果']}
+            tags={['前置条件', '执行步骤', '预期结果','服务端开发自测','客户端开发自测','产品自测','？']}
             progressShow={progressShow}
             readOnly={readOnly}
             mediaShow={!progressShow}
